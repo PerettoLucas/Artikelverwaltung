@@ -8,7 +8,7 @@
 
   <ng-container matColumnDef="id">
     <th mat-header-cell *matHeaderCellDef> ID </th>
-    <td mat-cell *matCellDef="let item"> <a routerLink="/Article/Detail">{{item.id}}</a> </td>
+    <td mat-cell *matCellDef="let item"> <a routerLink="/NewArticle/{{item.id}}">{{item.id}}</a> </td>
   </ng-container>
 
   <ng-container matColumnDef="beschreibung">
@@ -40,5 +40,14 @@
   <tr mat-row *matRowDef="let column; columns: displayedColumns;"></tr>
 </table>
 
-
+<div *ngIf="error != null">
+  <h3>Error : {{error.error}}</h3>
+  <h3>Message :  {{error.message}}</h3>
+  <h3>Name : {{error.name}}</h3>
+  <h3></h3>
+  <h3>ok : {{error.ok}}</h3>
+  <h3>Headers : {{error.headers}}</h3>
+  <h3>Status : {{error.status}}</h3>
+  <h3>Status text : {{error.statusText}}</h3>
+</div>
 

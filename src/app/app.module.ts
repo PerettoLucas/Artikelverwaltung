@@ -12,13 +12,25 @@ import {MatTableModule} from '@angular/material/table';
 import {registerLocaleData} from '@angular/common';
 import localeDe from '@angular/common/locales/de';
 import {LOCALE_ID} from '@angular/core';
+import {ReactiveFormsModule} from '@angular/forms';
+import {MatFormFieldModule} from '@angular/material/form-field';
 registerLocaleData(localeDe);
+
+import {MatInputModule} from '@angular/material/input';
+import { DeleteAllArticlesComponent } from './delete-all-articles/delete-all-articles.component';
+import { GenerateAllArticlesNewComponent } from './generate-all-articles-new/generate-all-articles-new.component';
+import {MatButtonModule} from '@angular/material/button';
+import {MatIconModule} from '@angular/material/icon';
+import {ErrorStateMatcher, ShowOnDirtyErrorStateMatcher} from '@angular/material/core';
+
 
 @NgModule({
   declarations: [
     AppComponent,
     ArticleListComponent,
-    NewArticleComponent
+    NewArticleComponent,
+    DeleteAllArticlesComponent,
+    GenerateAllArticlesNewComponent
   ],
   imports: [
     BrowserModule,
@@ -26,9 +38,18 @@ registerLocaleData(localeDe);
     BrowserAnimationsModule,
     MatTabsModule,
     MatTableModule,
-    HttpClientModule
+    HttpClientModule,
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule,
+    MatIconModule
   ],
   providers: [
+    {
+      provide: ErrorStateMatcher,
+      useClass: ShowOnDirtyErrorStateMatcher
+    },
     {provide: LOCALE_ID, useValue: 'de'}
   ],
   bootstrap: [AppComponent]

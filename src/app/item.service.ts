@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
-import {HttpClient} from '@angular/common/http';
-import {Observable} from 'rxjs';
+import {HttpClient, HttpErrorResponse, HttpResponse} from '@angular/common/http';
+import {forkJoin, Observable} from 'rxjs';
 import {Item} from '../shared/item';
+import {switchMap} from 'rxjs/operators';
+import {ItemFactory} from '../shared/Item-factory';
 
 @Injectable({
   providedIn: 'root'
@@ -16,31 +18,63 @@ export class ItemService {
     return this.http.get<Item[]>(`${this.URL}/api/items`);
   }
 
-  getItem(): void {
-
+  getItem(id: string): Observable<Item> {
+    id = id.toUpperCase();
+    return this.http.get<Item>(`${this.URL}/api/items/${id}`);
   }
 
   checkIdExists(): void {
 
   }
 
-  createItem(): void {
-
+  createItem(item: Item): Observable<HttpResponse<any>> {
+    return this.http.post<Item>(`${this.URL}/api/items`, item , {observe: 'response'});
   }
 
   updateItem(): void {
 
   }
 
-  deleteItem(): void {
-
+  deleteItem(id: string): Observable<HttpResponse<any>> {
+    return this.http.delete<Item>(`${this.URL}/api/items/${id}`, {observe: 'response'});
   }
 
-  deleteAllItems(): void {
-
+  deleteAllItems(): Observable<any> {
+    return this.getAllItems()
+      .pipe(
+        switchMap(
+          items => {
+            if (items != null && items.length > 0) {
+              return forkJoin(items.map(item => this.deleteItem(item.id)));
+            } else {
+              return new Observable(obs => {
+                obs.next(null);
+                obs.complete();
+              });
+            }
+          }
+        )
+      );
   }
 
-  createAllItems(): void {
+
+  createAllItems(): HttpResponse<Item> | HttpErrorResponse {
+
+    const respon: HttpResponse<Item> = new HttpResponse<Item>();
+
+    this.deleteAllItems().subscribe(
+      value => {
+        ItemFactory.items().forEach(
+          value1 => this.http.post<Item>(`${this.URL}/api/items`, value1, {observe: 'response'}).subscribe(
+            value2 => value2,
+            error => error
+          )
+        );
+      },
+      error => error
+    );
+
+    return respon;
 
   }
 

@@ -1,1 +1,48 @@
-<p>new-article works!</p>
+<form style="margin-top: 20px; width: 90%; margin-left: 5%" [formGroup]="registerForm" (ngSubmit)="register()" autocomplete="off">
+
+  <mat-form-field style="width: 100%">
+    <input matInput formControlName="id" placeholder="Id" type="text">
+    <mat-error>Id can not be empty or invalid</mat-error>
+  </mat-form-field>
+
+  <mat-form-field style="width: 100%">
+    <input matInput formControlName="beschreibung" placeholder="Beschreibung" type="text">
+    <mat-error>beschreibung can  not be empty</mat-error>
+  </mat-form-field>
+
+  <mat-form-field style="width: 100%">
+    <input matInput formControlName="anzahl" placeholder="Anzahl" type="text">
+    <mat-error></mat-error>
+  </mat-form-field>
+
+  <div formGroupName="einverkaufspreis">
+
+    <mat-form-field style="width: 45%">
+      <input matInput formControlName="einkaufspreis" placeholder="Einkaufspreis" type="text">
+      <mat-error></mat-error>
+    </mat-form-field>
+
+    <mat-form-field style="width: 45%; padding-left: 10%">
+      <input matInput formControlName="verkaufspreis" placeholder="Verkaufspreis" type="text">
+      <mat-error></mat-error>
+    </mat-form-field>
+
+  </div>
+
+  <mat-form-field style="width: 100%">
+    <input matInput formControlName="einfuehrungsdatum" placeholder="Einfuehrungsdatum" type="text">
+    <mat-error></mat-error>
+  </mat-form-field>
+
+  <div formArrayName="bilderliste">
+    <mat-form-field *ngFor="let image of images.controls; index as i">
+      <input matInput [formControlName]="i" placeholder="URL" type="text" >
+      <mat-error></mat-error>
+
+    </mat-form-field>
+    <button (click)="addImageControl()" type="button">Add Some shiat</button>
+  </div>
+
+</form>
+
+<button (click)="register()"> </button>

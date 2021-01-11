@@ -11,23 +11,19 @@ import {Item} from '../../shared/item';
 export class ArticleListComponent implements OnInit {
 
   public items!: Array<Item>;
-  private error!: HttpErrorResponse;
-  private response!: HttpResponse<any>;
+  public error!: HttpErrorResponse;
   displayedColumns: string[] = ['bild', 'id', 'beschreibung', 'anzahl', 'einkaufspreis', 'verkaufspreis', 'einführngsdatum'];
 
-  /*
-
-   */
-
-  constructor(private is: ItemService) { }
+  constructor(private is: ItemService) {
+  }
 
   ngOnInit(): void {
-
 
     this.is.getAllItems().subscribe(
       value => this.items = value,
       error => this.error = error
     );
+
 
   }
 
