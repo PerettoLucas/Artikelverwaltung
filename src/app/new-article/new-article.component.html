@@ -30,19 +30,50 @@
   </div>
 
   <mat-form-field style="width: 100%">
-    <input matInput formControlName="einfuehrungsdatum" placeholder="Einfuehrungsdatum" type="text">
+    <input matInput formControlName="einfuehrungsdatum" placeholder="Einfuehrungsdatum" type="date">
     <mat-error></mat-error>
   </mat-form-field>
 
   <div formArrayName="bilderliste">
-    <mat-form-field *ngFor="let image of images.controls; index as i">
-      <input matInput [formControlName]="i" placeholder="URL" type="text" >
-      <mat-error></mat-error>
+    <div *ngFor="let image of images.controls; index as i">
+      <div [formGroupName]="i">
+        <mat-form-field style="width: 62%">
+          <input matInput formControlName="url" placeholder="URL" type="text">
+        </mat-form-field>
+        <mat-form-field style="width: 25%; padding-left: 5%">
+          <input matInput formControlName="title" placeholder="Titel" type="text">
+        </mat-form-field>
 
-    </mat-form-field>
-    <button (click)="addImageControl()" type="button">Add Some shiat</button>
+
+        <button *ngIf="i > 0" mat-icon-button color="warn" (click)="removeImageControl(i)">
+          <mat-icon>remove_circle</mat-icon>
+        </button>
+
+        <button mat-icon-button color="primary" (click)="addImageControl()">
+          <mat-icon>add_circle</mat-icon>
+        </button>
+
+      </div>
+    </div>
+
+  </div>
+
+  <div style="margin-top: 30px">
+    <button mat-raised-button color="primary" style="width: 50%" (click)="itemAendern()">Ändern</button>
+    <button mat-raised-button color="accent" style="width: 50%" (click)="itemLoeschen()">Löschen</button>
+  </div>
+
+  <div *ngIf="error != null">
+    <h3>Error : {{error.error}}</h3>
+    <h3>Message :  {{error.message}}</h3>
+    <h3>Name : {{error.name}}</h3>
+    <h3></h3>
+    <h3>ok : {{error.ok}}</h3>
+    <h3>Headers : {{error.headers}}</h3>
+    <h3>Status : {{error.status}}</h3>
+    <h3>Status text : {{error.statusText}}</h3>
   </div>
 
 </form>
 
-<button (click)="register()"> </button>
+<button mat-button (click)="register()"> Register </button>

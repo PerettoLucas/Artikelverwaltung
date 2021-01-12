@@ -4,6 +4,7 @@ import {forkJoin, Observable} from 'rxjs';
 import {Item} from '../shared/item';
 import {switchMap} from 'rxjs/operators';
 import {ItemFactory} from '../shared/Item-factory';
+import {Router} from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +13,7 @@ export class ItemService {
 
   private URL = 'http://localhost:3000';
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private router: Router) { }
 
   getAllItems(): Observable<Item[]> {
     return this.http.get<Item[]>(`${this.URL}/api/items`);
@@ -66,7 +67,10 @@ export class ItemService {
       value => {
         ItemFactory.items().forEach(
           value1 => this.http.post<Item>(`${this.URL}/api/items`, value1, {observe: 'response'}).subscribe(
-            value2 => value2,
+            value2 => {
+              this.router.navigate(['/']);
+              return value2;
+            },
             error => error
           )
         );

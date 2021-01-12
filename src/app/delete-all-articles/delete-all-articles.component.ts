@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {ItemService} from '../item.service';
 import {HttpClient, HttpErrorResponse, HttpResponse} from '@angular/common/http';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'av-delete-all-articles',
@@ -12,7 +13,7 @@ export class DeleteAllArticlesComponent implements OnInit {
   public error!: HttpErrorResponse;
   public response!: HttpResponse<any>;
 
-  constructor(private is: ItemService, private http: HttpClient) { }
+  constructor(private is: ItemService, private http: HttpClient, private router: Router) { }
 
   ngOnInit(): void {
   }
@@ -21,7 +22,7 @@ export class DeleteAllArticlesComponent implements OnInit {
     this.is.deleteAllItems().subscribe(
       value => {
         this.response = value;
-        // alert(this.response);
+        this.router.navigate(['/']);
       },
       error1 => this.error = error1
     );

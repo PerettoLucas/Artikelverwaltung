@@ -9,11 +9,12 @@ import {MatTabsModule} from '@angular/material/tabs';
 import { ArticleListComponent } from './article-list/article-list.component';
 import { NewArticleComponent } from './new-article/new-article.component';
 import {MatTableModule} from '@angular/material/table';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {ReactiveFormsModule} from '@angular/forms';
+
 import {registerLocaleData} from '@angular/common';
 import localeDe from '@angular/common/locales/de';
 import {LOCALE_ID} from '@angular/core';
-import {ReactiveFormsModule} from '@angular/forms';
-import {MatFormFieldModule} from '@angular/material/form-field';
 registerLocaleData(localeDe);
 
 import {MatInputModule} from '@angular/material/input';
