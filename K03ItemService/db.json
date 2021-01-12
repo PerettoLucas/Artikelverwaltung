@@ -33,18 +33,16 @@
       ]
     },
     {
-      "id": "IT567666",
-      "description": "Holla",
-      "number": "200",
-      "einverkaufspreis": {
-        "purchasingPrice": "120",
-        "retailPrice": "500"
-      },
+      "id": "IT567777",
+      "description": "Hoddla",
+      "number": 200,
+      "purchasingPrice": 120,
+      "retailPrice": 500,
       "launchDate": "2021-01-12",
       "images": [
         {
-          "url": "https://pbs.twimg.com/profile_images/488299772227248128/5Sq_sK_q.png",
-          "title": "Waldfeh"
+          "url": "https://i.pinimg.com/originals/a2/6d/3b/a26d3b86b7f2f18c84eeefb33f457a0b.jpg",
+          "title": "pintri"
         }
       ]
     }

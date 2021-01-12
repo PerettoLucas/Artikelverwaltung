@@ -43,10 +43,8 @@ export class NewArticleComponent implements OnInit {
             id: [this.item.id, Validators.required],
             description: [this.item.description, Validators.required],
             number: [this.item.number],
-            einverkaufspreis: this.fb.group({
-              purchasingPrice: [this.item.purchasingPrice],
-              retailPrice: [this.item.retailPrice]
-            }),
+            purchasingPrice: [this.item.purchasingPrice],
+            retailPrice: [this.item.retailPrice],
             launchDate: [this.item.launchDate],
             images: this.fb.array([imageGroup])
           });
@@ -65,10 +63,8 @@ export class NewArticleComponent implements OnInit {
                 id: [this.item.id, Validators.required],
                 description: [this.item.description, Validators.required],
                 number: [this.item.number],
-                einverkaufspreis: this.fb.group({
-                  purchasingPrice: [this.item.purchasingPrice],
-                  retailPrice: [this.item.retailPrice]
-                }),
+                purchasingPrice: [this.item.purchasingPrice],
+                retailPrice: [this.item.retailPrice],
                 launchDate: [this.item.launchDate],
                 images: this.fb.array([imageGroup])
               });
