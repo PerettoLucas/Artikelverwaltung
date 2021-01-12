@@ -1,8 +1,8 @@
 <form style="margin-top: 20px; width: 90%; margin-left: 5%" [formGroup]="registerForm" autocomplete="off">
 
   <mat-form-field style="width: 100%">
-    <input matInput formControlName="id" placeholder="Id" type="text">
-    <mat-error>Id can not be empty or invalid</mat-error>
+    <input #IdInput matInput formControlName="id" placeholder="Id" type="text" [readonly]="this.id == 'new' ? false : true">
+    <mat-error> Id can not be empty or invalid</mat-error>
   </mat-form-field>
 
   <mat-form-field style="width: 100%">
@@ -12,17 +12,17 @@
 
   <mat-form-field style="width: 100%">
     <input matInput formControlName="number" placeholder="Anzahl" type="number">
-    <mat-error></mat-error>
+    <mat-error>muss größer oder gleich 0 sein</mat-error>
   </mat-form-field>
 
   <mat-form-field style="width: 45%">
     <input matInput formControlName="purchasingPrice" placeholder="Einkaufspreis" type="number">
-    <mat-error></mat-error>
+    <mat-error>muss größer oder gleich 0 sein</mat-error>
   </mat-form-field>
 
   <mat-form-field style="width: 45%; padding-left: 10%">
     <input matInput formControlName="retailPrice" placeholder="Verkaufspreis" type="number">
-    <mat-error></mat-error>
+    <mat-error>muss größer oder gleich 0 sein</mat-error>
   </mat-form-field>
 
   <mat-form-field style="width: 100%">
@@ -35,9 +35,11 @@
       <div [formGroupName]="i">
         <mat-form-field style="width: 62%">
           <input matInput formControlName="url" placeholder="URL" type="text">
+          <mat-error>min. 1 URL has to be defined!</mat-error>
         </mat-form-field>
         <mat-form-field style="width: 25%; padding-left: 5%">
           <input matInput formControlName="title" placeholder="Titel" type="text">
+          <mat-hint>(optional)</mat-hint>
         </mat-form-field>
 
 
@@ -55,7 +57,7 @@
   </div>
 
   <div style="margin-top: 30px" *ngIf="this.id == 'new'; else idContent">
-    <button mat-raised-button color="primary" style="width: 100%" (click)="createItem()" type="button">Create</button>
+    <button mat-raised-button color="primary" style="width: 100%" (click)="createItem()" type="submit">Create</button>
   </div>
 
   <ng-template #idContent>
@@ -64,6 +66,11 @@
       <button mat-raised-button color="accent" style="width: 50%" (click)="itemLoeschen()" type="button">Löschen</button>
     </div>
   </ng-template>
+
+  <div>
+    <button mat-button (click)="checkIdExists(IdInput.value)">CheckIdExists</button>
+    <h1 *ngIf="Idexists == true">Ostia existiert schun</h1>
+  </div>
 
 
   <div *ngIf="error != null">

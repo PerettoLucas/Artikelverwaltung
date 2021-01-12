@@ -5,6 +5,7 @@ import {ItemFactory} from '../../shared/Item-factory';
 import {ActivatedRoute, Router} from '@angular/router';
 import {ItemService} from '../item.service';
 import {HttpErrorResponse} from '@angular/common/http';
+import {Subscription} from 'rxjs';
 
 @Component({
   selector: 'av-new-article',
@@ -17,14 +18,16 @@ export class NewArticleComponent implements OnInit {
   public id!: string;
   public error!: HttpErrorResponse;
   public item = ItemFactory.empty();
+  public Idexists: boolean | Subscription | HttpErrorResponse = false;
 
   constructor(private fb: FormBuilder, private route: ActivatedRoute, private is: ItemService, private router: Router) { }
 
-  // TODO validators
+  // TODO disable ID when not new
   // TODO async validator for ID
-  // TODO einverkauf in html ändern
+  public bool = true;
 
   ngOnInit(): void {
+    this.bool = true;
 
     this.route.params.subscribe(
       params => {
@@ -35,16 +38,16 @@ export class NewArticleComponent implements OnInit {
 
 
           const imageGroup = this.fb.group({
-            url: [this.item.images[0].url],
-            title: [this.item.images[0].title]
+            url: ['', Validators.required],
+            title: ['']
           });
 
           this.registerForm = this.fb.group({
             id: [this.item.id, Validators.required],
             description: [this.item.description, Validators.required],
-            number: [this.item.number],
-            purchasingPrice: [this.item.purchasingPrice],
-            retailPrice: [this.item.retailPrice],
+            number: [this.item.number, Validators.min(0)],
+            purchasingPrice: [this.item.purchasingPrice, Validators.min(0)],
+            retailPrice: [this.item.retailPrice, Validators.min(0)],
             launchDate: [this.item.launchDate],
             images: this.fb.array([imageGroup])
           });
@@ -55,18 +58,26 @@ export class NewArticleComponent implements OnInit {
             value1 => {
               this.item = value1;
               const imageGroup = this.fb.group({
-                url: [this.item.images[0].url],
+                url: [this.item.images[0].url, Validators.required],
                 title: [this.item.images[0].title]
               });
 
               this.registerForm = this.fb.group({
-                id: [this.item.id, Validators.required],
+                id: [this.item.id],
                 description: [this.item.description, Validators.required],
-                number: [this.item.number],
-                purchasingPrice: [this.item.purchasingPrice],
-                retailPrice: [this.item.retailPrice],
+                number: [this.item.number, Validators.min(0)],
+                purchasingPrice: [this.item.purchasingPrice, Validators.min(0)],
+                retailPrice: [this.item.retailPrice, Validators.min(0)],
                 launchDate: [this.item.launchDate],
                 images: this.fb.array([imageGroup])
+              });
+
+
+              let index = 0;
+              this.item.images.forEach(value => {
+                if (index === 0){index++; } else {
+                  this.addImageControlValues(this.item.images[index].url.toString(), this.item.images[index].title);
+                }
               });
 
             }
@@ -86,6 +97,14 @@ export class NewArticleComponent implements OnInit {
     const imageGroup = this.fb.group({
       url: [''],
       title: ['']
+    });
+    this.images.push(imageGroup);
+  }
+
+  addImageControlValues(url: string, title: string): void {
+    const imageGroup = this.fb.group({
+      url: [url],
+      title: [title]
     });
     this.images.push(imageGroup);
   }
@@ -115,6 +134,12 @@ export class NewArticleComponent implements OnInit {
         this.router.navigate(['/']);
       },
       error1 => this.error = error1
+    );
+  }
+
+  checkIdExists(id: string): void {
+    this.is.checkIdExists(id).then(
+     value => this.Idexists = value
     );
   }
 }

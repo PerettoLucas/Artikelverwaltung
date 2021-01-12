@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpErrorResponse, HttpResponse} from '@angular/common/http';
-import {forkJoin, Observable} from 'rxjs';
+import {forkJoin, Observable, Subscription} from 'rxjs';
 import {Item} from '../shared/item';
 import {switchMap} from 'rxjs/operators';
 import {ItemFactory} from '../shared/Item-factory';
@@ -24,7 +24,14 @@ export class ItemService {
     return this.http.get<Item>(`${this.URL}/api/items/${id}`);
   }
 
-  checkIdExists(): void {
+  async checkIdExists(id: string): Promise<boolean> {
+
+    let idItem = '';
+    await this.http.get<Item>(`${this.URL}/api/items/${id}`).toPromise().then(
+      value => idItem = value.id
+    ).catch(reason => false);
+
+    return idItem === id ? true : false;
 
   }
 
