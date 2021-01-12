@@ -31,6 +31,22 @@
           "title": "Kupplungsscheibe"
         }
       ]
+    },
+    {
+      "id": "IT567666",
+      "description": "Holla",
+      "number": "200",
+      "einverkaufspreis": {
+        "purchasingPrice": "120",
+        "retailPrice": "500"
+      },
+      "launchDate": "2021-01-12",
+      "images": [
+        {
+          "url": "https://pbs.twimg.com/profile_images/488299772227248128/5Sq_sK_q.png",
+          "title": "Waldfeh"
+        }
+      ]
     }
   ]
 }

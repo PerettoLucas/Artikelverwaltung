@@ -1,4 +1,4 @@
-<form style="margin-top: 20px; width: 90%; margin-left: 5%" [formGroup]="registerForm" (ngSubmit)="register()" autocomplete="off">
+<form style="margin-top: 20px; width: 90%; margin-left: 5%" [formGroup]="registerForm" (ngSubmit)="createItem()" autocomplete="off">
 
   <mat-form-field style="width: 100%">
     <input matInput formControlName="id" placeholder="Id" type="text">
@@ -6,35 +6,35 @@
   </mat-form-field>
 
   <mat-form-field style="width: 100%">
-    <input matInput formControlName="beschreibung" placeholder="Beschreibung" type="text">
+    <input matInput formControlName="description" placeholder="Beschreibung" type="text">
     <mat-error>beschreibung can  not be empty</mat-error>
   </mat-form-field>
 
   <mat-form-field style="width: 100%">
-    <input matInput formControlName="anzahl" placeholder="Anzahl" type="text">
+    <input matInput formControlName="number" placeholder="Anzahl" type="text">
     <mat-error></mat-error>
   </mat-form-field>
 
   <div formGroupName="einverkaufspreis">
 
     <mat-form-field style="width: 45%">
-      <input matInput formControlName="einkaufspreis" placeholder="Einkaufspreis" type="text">
+      <input matInput formControlName="purchasingPrice" placeholder="Einkaufspreis" type="text">
       <mat-error></mat-error>
     </mat-form-field>
 
     <mat-form-field style="width: 45%; padding-left: 10%">
-      <input matInput formControlName="verkaufspreis" placeholder="Verkaufspreis" type="text">
+      <input matInput formControlName="retailPrice" placeholder="Verkaufspreis" type="text">
       <mat-error></mat-error>
     </mat-form-field>
 
   </div>
 
   <mat-form-field style="width: 100%">
-    <input matInput formControlName="einfuehrungsdatum" placeholder="Einfuehrungsdatum" type="date">
+    <input matInput formControlName="launchDate" placeholder="Einfuehrungsdatum" type="date">
     <mat-error></mat-error>
   </mat-form-field>
 
-  <div formArrayName="bilderliste">
+  <div formArrayName="images">
     <div *ngFor="let image of images.controls; index as i">
       <div [formGroupName]="i">
         <mat-form-field style="width: 62%">
@@ -58,16 +58,22 @@
 
   </div>
 
-  <div style="margin-top: 30px">
-    <button mat-raised-button color="primary" style="width: 50%" (click)="itemAendern()">Ändern</button>
-    <button mat-raised-button color="accent" style="width: 50%" (click)="itemLoeschen()">Löschen</button>
+  <div style="margin-top: 30px" *ngIf="this.id == 'new'; else idContent">
+    <button mat-raised-button color="primary" style="width: 100%" (click)="createItem()">Create</button>
   </div>
+
+  <ng-template #idContent>
+    <div style="margin-top: 30px">
+      <button mat-raised-button color="primary" style="width: 50%" (click)="itemAendern()">Ändern</button>
+      <button mat-raised-button color="accent" style="width: 50%" (click)="itemLoeschen()">Löschen</button>
+    </div>
+  </ng-template>
+
 
   <div *ngIf="error != null">
     <h3>Error : {{error.error}}</h3>
     <h3>Message :  {{error.message}}</h3>
     <h3>Name : {{error.name}}</h3>
-    <h3></h3>
     <h3>ok : {{error.ok}}</h3>
     <h3>Headers : {{error.headers}}</h3>
     <h3>Status : {{error.status}}</h3>
@@ -76,4 +82,3 @@
 
 </form>
 
-<button mat-button (click)="register()"> Register </button>

@@ -14,10 +14,15 @@ import {HttpErrorResponse} from '@angular/common/http';
 export class NewArticleComponent implements OnInit {
 
   public registerForm!: FormGroup;
-  private id!: string;
-  private error!: HttpErrorResponse;
+  public id!: string;
+  public error!: HttpErrorResponse;
+  public item = ItemFactory.empty();
 
   constructor(private fb: FormBuilder, private route: ActivatedRoute, private is: ItemService, private router: Router) { }
+
+  // TODO validators
+  // TODO async validator for ID
+  // TODO einverkauf in html ändern
 
   ngOnInit(): void {
 
@@ -27,45 +32,45 @@ export class NewArticleComponent implements OnInit {
 
 
         if (this.id === 'new') {
-          const item = ItemFactory.empty();
+
 
           const imageGroup = this.fb.group({
-            url: [item.images[0].url],
-            title: [item.images[0].title]
+            url: [this.item.images[0].url],
+            title: [this.item.images[0].title]
           });
 
           this.registerForm = this.fb.group({
-            id: [item.id, Validators.required],
-            beschreibung: [item.description, Validators.required],
-            anzahl: [item.number],
+            id: [this.item.id, Validators.required],
+            description: [this.item.description, Validators.required],
+            number: [this.item.number],
             einverkaufspreis: this.fb.group({
-              einkaufspreis: [item.purchasingPrice],
-              verkaufspreis: [item.retailPrice]
+              purchasingPrice: [this.item.purchasingPrice],
+              retailPrice: [this.item.retailPrice]
             }),
-            einfuehrungsdatum: [item.launchDate],
-            bilderliste: this.fb.array([imageGroup])
+            launchDate: [this.item.launchDate],
+            images: this.fb.array([imageGroup])
           });
 
         } else {
 
           this.is.getItem(this.id).subscribe(
             value1 => {
-              const item = value1;
+              this.item = value1;
               const imageGroup = this.fb.group({
-                url: [item.images[0].url],
-                title: [item.images[0].title]
+                url: [this.item.images[0].url],
+                title: [this.item.images[0].title]
               });
 
               this.registerForm = this.fb.group({
-                id: [item.id, Validators.required],
-                beschreibung: [item.description, Validators.required],
-                anzahl: [item.number],
+                id: [this.item.id, Validators.required],
+                description: [this.item.description, Validators.required],
+                number: [this.item.number],
                 einverkaufspreis: this.fb.group({
-                  einkaufspreis: [item.purchasingPrice],
-                  verkaufspreis: [item.retailPrice]
+                  purchasingPrice: [this.item.purchasingPrice],
+                  retailPrice: [this.item.retailPrice]
                 }),
-                einfuehrungsdatum: [item.launchDate],
-                bilderliste: this.fb.array([imageGroup])
+                launchDate: [this.item.launchDate],
+                images: this.fb.array([imageGroup])
               });
 
             }
@@ -78,7 +83,7 @@ export class NewArticleComponent implements OnInit {
   }
 
   get images(): FormArray {
-    return this.registerForm.get('bilderliste') as FormArray;
+    return this.registerForm.get('images') as FormArray;
   }
 
   addImageControl(): void {
@@ -97,10 +102,6 @@ export class NewArticleComponent implements OnInit {
    return this.registerForm.value;
   }
 
-  register(): void {
-
-  }
-
   itemAendern(): void {
 
   }
@@ -109,6 +110,15 @@ export class NewArticleComponent implements OnInit {
     this.is.deleteItem(this.ItemForm.id).subscribe(
       value => {this.router.navigate(['/']); },
       error => this.error = error
+    );
+  }
+
+  createItem(): void {
+    this.is.createItem(this.ItemForm).subscribe(
+      value => {
+        this.router.navigate(['/']);
+      },
+      error1 => this.error = error1
     );
   }
 }
