@@ -13,7 +13,7 @@ export class DeleteAllArticlesComponent implements OnInit {
   public error!: HttpErrorResponse;
   public response!: HttpResponse<any>;
 
-  constructor(private is: ItemService, private http: HttpClient, private router: Router) { }
+  constructor(private is: ItemService, private router: Router) { }
 
   ngOnInit(): void {
   }

@@ -1,11 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import {FormArray, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {Form, FormArray, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {Item} from '../../shared/item';
 import {ItemFactory} from '../../shared/Item-factory';
 import {ActivatedRoute, Router} from '@angular/router';
 import {ItemService} from '../item.service';
 import {HttpErrorResponse} from '@angular/common/http';
 import {Subscription} from 'rxjs';
+import {ItemValidators} from '../../shared/ItemValidators';
+import {CR} from '@angular/compiler/src/i18n/serializers/xml_helper';
 
 @Component({
   selector: 'av-new-article',
@@ -45,9 +47,11 @@ export class NewArticleComponent implements OnInit {
           this.registerForm = this.fb.group({
             id: [this.item.id, Validators.required],
             description: [this.item.description, Validators.required],
-            number: [this.item.number, Validators.min(0)],
-            purchasingPrice: [this.item.purchasingPrice, Validators.min(0)],
-            retailPrice: [this.item.retailPrice, Validators.min(0)],
+            number: [this.item.number, [Validators.min(0), ItemValidators.decimalNum]],
+            einverkaufspreise: this.fb.group({
+              purchasingPrice: [this.item.purchasingPrice, Validators.min(0)],
+              retailPrice: [this.item.retailPrice, Validators.min(0)]
+            }, {validators: ItemValidators.prices}),
             launchDate: [this.item.launchDate],
             images: this.fb.array([imageGroup])
           });
@@ -65,9 +69,11 @@ export class NewArticleComponent implements OnInit {
               this.registerForm = this.fb.group({
                 id: [this.item.id],
                 description: [this.item.description, Validators.required],
-                number: [this.item.number, Validators.min(0)],
-                purchasingPrice: [this.item.purchasingPrice, Validators.min(0)],
-                retailPrice: [this.item.retailPrice, Validators.min(0)],
+                number: [this.item.number, [Validators.min(0), ItemValidators.decimalNum]],
+                einverkaufspreise: this.fb.group({
+                  purchasingPrice: [this.item.purchasingPrice, Validators.min(0)],
+                  retailPrice: [this.item.retailPrice, Validators.min(0)]
+                }, {validators: ItemValidators.prices}),
                 launchDate: [this.item.launchDate],
                 images: this.fb.array([imageGroup])
               });
@@ -93,6 +99,18 @@ export class NewArticleComponent implements OnInit {
     return this.registerForm.get('images') as FormArray;
   }
 
+  get ItemForm(): Item {
+   return this.registerForm.value;
+  }
+
+  get einverkaufspreise(): FormGroup {
+    return this.registerForm.get('einverkaufspreise') as FormGroup;
+  }
+
+  get number(): FormControl {
+    return this.registerForm.get('number') as FormControl;
+  }
+
   addImageControl(): void {
     const imageGroup = this.fb.group({
       url: [''],
@@ -113,12 +131,22 @@ export class NewArticleComponent implements OnInit {
     this.images.removeAt(i);
   }
 
-  get ItemForm(): Item {
-   return this.registerForm.value;
-  }
 
   itemAendern(): void {
+    const CreatedItem = ItemFactory.empty();
 
+    CreatedItem.id = this.ItemForm.id;
+    CreatedItem.description = this.ItemForm.description;
+    CreatedItem.number = this.ItemForm.number;
+    CreatedItem.purchasingPrice = this.einverkaufspreise.value.purchasingPrice;
+    CreatedItem.retailPrice = this.einverkaufspreise.value.retailPrice;
+    CreatedItem.launchDate = this.ItemForm.launchDate;
+    CreatedItem.images = this.ItemForm.images;
+
+    this.is.updateItem(CreatedItem).subscribe(
+      value => {this.router.navigate(['/']); },
+      error1 => this.error = error1
+    );
   }
 
   itemLoeschen(): void {
@@ -129,7 +157,18 @@ export class NewArticleComponent implements OnInit {
   }
 
   createItem(): void {
-    this.is.createItem(this.ItemForm).subscribe(
+
+    const CreatedItem = ItemFactory.empty();
+
+    CreatedItem.id = this.ItemForm.id;
+    CreatedItem.description = this.ItemForm.description;
+    CreatedItem.number = this.ItemForm.number;
+    CreatedItem.purchasingPrice = this.einverkaufspreise.value.purchasingPrice;
+    CreatedItem.retailPrice = this.einverkaufspreise.value.retailPrice;
+    CreatedItem.launchDate = this.ItemForm.launchDate;
+    CreatedItem.images = this.ItemForm.images;
+
+    this.is.createItem(CreatedItem).subscribe(
       value => {
         this.router.navigate(['/']);
       },

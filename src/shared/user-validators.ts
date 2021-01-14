@@ -1,6 +1,7 @@
 import { FormControl, FormGroup, FormArray } from '@angular/forms';
 
 export class UserValidators {
+
   static passwordFormat(fc: FormControl): {[error: string]: any } {
     const passwordPattern = new RegExp('^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$');
     return passwordPattern.test(fc.value) ? null : {

@@ -1,6 +1,20 @@
 {
   "items": [
     {
+      "id": "DE12345678",
+      "description": "D",
+      "number": null,
+      "purchasingPrice": 25.3,
+      "retailPrice": 26,
+      "launchDate": "2019-02-01",
+      "images": [
+        {
+          "url": "https://upload.wikimedia.org/wikipedia/commons/0/08/Sindelfingen_Haus_%26_Energie_2018_by-RaBoe_056.jpg",
+          "title": "Umwälzpumpe"
+        }
+      ]
+    },
+    {
       "id": "IT123456",
       "description": "Kupplung",
       "number": 100,
@@ -15,24 +29,6 @@
         {
           "url": "https://upload.wikimedia.org/wikipedia/commons/5/5b/Clutchdisc.jpg",
           "title": "Kupplungsscheibe"
-        }
-      ]
-    },
-    {
-      "id": "IT567777",
-      "description": "Holladrio",
-      "number": 0,
-      "purchasingPrice": 0,
-      "retailPrice": 0,
-      "launchDate": "2021-01-12",
-      "images": [
-        {
-          "url": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSKxtmM26Z404Zo_CAu1BSIrsGQ6YcEwgBWjw&usqp=CAU",
-          "title": "Hoista"
-        },
-        {
-          "url": "https://i.stack.imgur.com/bgCCu.png",
-          "title": "sgeatn"
         }
       ]
     }

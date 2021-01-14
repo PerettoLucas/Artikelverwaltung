@@ -39,8 +39,8 @@ export class ItemService {
     return this.http.post<Item>(`${this.URL}/api/items`, item , {observe: 'response'});
   }
 
-  updateItem(): void {
-
+  updateItem(item: Item): Observable<HttpResponse<any>> {
+    return this.http.put<Item>(`${this.URL}/api/items/${item.id}`, item,  {observe: 'response'});
   }
 
   deleteItem(id: string): Observable<HttpResponse<any>> {
