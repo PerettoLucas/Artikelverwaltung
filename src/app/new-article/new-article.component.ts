@@ -45,7 +45,7 @@ export class NewArticleComponent implements OnInit {
           });
 
           this.registerForm = this.fb.group({
-            id: [this.item.id, Validators.required],
+            id: [this.item.id, [Validators.required, ItemValidators.id]],
             description: [this.item.description, Validators.required],
             number: [this.item.number, [Validators.min(0), ItemValidators.decimalNum]],
             einverkaufspreise: this.fb.group({

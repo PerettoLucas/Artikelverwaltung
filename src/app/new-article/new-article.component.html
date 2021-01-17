@@ -2,7 +2,9 @@
 
   <mat-form-field style="width: 100%">
     <input #IdInput matInput formControlName="id" placeholder="Id" type="text" [readonly]="this.id == 'new' ? false : true">
-    <mat-error> Id can not be empty or invalid</mat-error>
+    <mat-error *ngIf="this.registerForm.get('id').hasError('required')"> Id can not be empty</mat-error>
+    <mat-error *ngIf="this.registerForm.get('id').hasError('id')">IT has to follow 6 chars ; DE has to follow 8 chars</mat-error>
+    <mat-error *ngIf="this.registerForm.get('id').hasError('async')">ID is already taken!</mat-error>
   </mat-form-field>
 
   <mat-form-field style="width: 100%">
