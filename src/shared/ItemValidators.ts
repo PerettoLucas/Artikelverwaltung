@@ -1,5 +1,6 @@
 import {ItemService} from '../app/item.service';
-import {FormControl, FormGroup} from '@angular/forms';
+import {FormArray, FormControl, FormGroup} from '@angular/forms';
+import {valueReferenceToExpression} from '@angular/compiler-cli/src/ngtsc/annotations/src/util';
 
 
 export class ItemValidators {
@@ -26,9 +27,26 @@ export class ItemValidators {
       if (fc.value < 0 ){
         return null;
       }else {
+
         return {decimalNum: {valid: false}};
       }
     }
+  }
+
+  static imageURLSame(fa: FormArray): {[error: string]: any} | null {
+
+    let i = 0;
+    for (const imageURL of fa.value.url) {
+      fa.value.map((value: { url: string; }) => {
+        if (value.url === imageURL) {
+          fa.at(i).setErrors({imageURLSame: {valid: false}});
+        }
+        i++;
+      });
+      i = 0;
+    }
+
+    return null;
   }
 
 
